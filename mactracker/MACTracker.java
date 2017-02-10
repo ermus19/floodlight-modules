@@ -30,6 +30,7 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 	protected IFloodlightProviderService floodlightProvider;
 	protected IRestApiService  restApiService;
 	protected Set<Long> macAddresses;
+	protected static ArrayList<String> macList;
 	protected static Logger logger;
 
 	@Override
@@ -74,6 +75,7 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 		floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
 		restApiService = context.getServiceImpl(IRestApiService.class);
 	    macAddresses = new ConcurrentSkipListSet<Long>();
+			macList =  new ArrayList<String>();
 	    logger = LoggerFactory.getLogger(MACTracker.class);
 	}
 
@@ -89,18 +91,19 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 		 Ethernet eth =
 	                IFloodlightProviderService.bcStore.get(cntx,
 	                                            IFloodlightProviderService.CONTEXT_PI_PAYLOAD);
-	 
+
 	        Long sourceMACHash = eth.getSourceMACAddress().getLong();
 	        if (!macAddresses.contains(sourceMACHash)) {
 	            macAddresses.add(sourceMACHash);
+							macList.add(eth.getSourceMACAddress().toString());
 	            logger.info("MAC Address: {} seen on switch: {}",
 	                    eth.getSourceMACAddress().toString(),
 	                    sw.getId().toString());
 	        }
 	        return Command.CONTINUE;
 	    }
-	
-	public Set getMacs(){
-		return macAddresses;
+
+  public static ArrayList<String> getMacs(){
+		return macList;
 	}
 }
