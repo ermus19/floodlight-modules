@@ -25,6 +25,9 @@ import net.floodlightcontroller.staticentry.web.StaticEntryWebRoutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(using=MACTrackerSerializer.class)
 public class MACTracker implements IOFMessageListener, IFloodlightModule {
 
 	protected IFloodlightProviderService floodlightProvider;
@@ -40,13 +43,11 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 
 	@Override
 	public boolean isCallbackOrderingPrereq(OFType type, String name) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isCallbackOrderingPostreq(OFType type, String name) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -75,14 +76,14 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 		floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
 		restApiService = context.getServiceImpl(IRestApiService.class);
 	    macAddresses = new ConcurrentSkipListSet<Long>();
-			macList =  new ArrayList<String>();
+	    macList = new ArrayList<String>();
 	    logger = LoggerFactory.getLogger(MACTracker.class);
 	}
 
 	@Override
 	public void startUp(FloodlightModuleContext context) throws FloodlightModuleException {
 		floodlightProvider.addOFMessageListener(OFType.PACKET_IN, this);
-		restApiService.addRestletRoutable(new MACWebRoutable());
+		restApiService.addRestletRoutable(new MACTrackerWebRoutable());
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 	        Long sourceMACHash = eth.getSourceMACAddress().getLong();
 	        if (!macAddresses.contains(sourceMACHash)) {
 	            macAddresses.add(sourceMACHash);
-							macList.add(eth.getSourceMACAddress().toString());
+	            macList.add(eth.getSourceMACAddress().toString());
 	            logger.info("MAC Address: {} seen on switch: {}",
 	                    eth.getSourceMACAddress().toString(),
 	                    sw.getId().toString());
@@ -103,7 +104,7 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 	        return Command.CONTINUE;
 	    }
 
-  public static ArrayList<String> getMacs(){
+	public ArrayList<String> getMacs(){
 		return macList;
 	}
 }

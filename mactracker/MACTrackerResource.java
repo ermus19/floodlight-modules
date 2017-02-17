@@ -8,15 +8,14 @@ import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MACResource extends ServerResource {
+public class MACTrackerResource extends ServerResource {
 
-	protected static Logger log = LoggerFactory.getLogger(MACResource.class);
+	protected static Logger log = LoggerFactory.getLogger(MACTrackerResource.class);
 
 	@Get("json")
-	public Object test (){
+	public MACTracker test (){
 		log.info("MAC TRACKER REST API HIT BY GET");
-		ArrayList test = MACTracker.getMacs();
-		return test.toString();
+		return new MACTracker();
 	}
 
 }

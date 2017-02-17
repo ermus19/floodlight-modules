@@ -6,12 +6,12 @@ import org.restlet.routing.Router;
 
 import net.floodlightcontroller.restserver.RestletRoutable;
 
-public class MACWebRoutable implements RestletRoutable {
+public class MACTrackerWebRoutable implements RestletRoutable {
 
 	@Override
 	public Restlet getRestlet(Context context) {
 		Router router = new Router(context);
-		router.attach("/json", MACResource.class);
+		router.attach("/json", MACTrackerResource.class);
 		return router;
 	}
 
