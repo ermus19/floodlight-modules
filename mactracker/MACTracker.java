@@ -20,8 +20,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.Set;
 import net.floodlightcontroller.packet.Ethernet;
 import net.floodlightcontroller.restserver.IRestApiService;
-import net.floodlightcontroller.staticentry.web.StaticEntryWebRoutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,9 +73,9 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 	public void init(FloodlightModuleContext context) throws FloodlightModuleException {
 		floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
 		restApiService = context.getServiceImpl(IRestApiService.class);
-	    macAddresses = new ConcurrentSkipListSet<Long>();
-	    macList = new ArrayList<String>();
-	    logger = LoggerFactory.getLogger(MACTracker.class);
+	  macAddresses = new ConcurrentSkipListSet<Long>();
+	  macList = new ArrayList<String>();
+	  logger = LoggerFactory.getLogger(MACTracker.class);
 	}
 
 	@Override

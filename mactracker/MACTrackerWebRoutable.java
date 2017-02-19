@@ -11,13 +11,13 @@ public class MACTrackerWebRoutable implements RestletRoutable {
 	@Override
 	public Restlet getRestlet(Context context) {
 		Router router = new Router(context);
-		router.attach("/json", MACTrackerResource.class);
+		router.attach("/list/json", MACTrackerResource.class);
 		return router;
 	}
 
 	@Override
 	public String basePath() {
-		return "/test/mac";
+		return "/wm/mactracker";
 	}
 
 }
