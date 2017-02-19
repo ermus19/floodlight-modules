@@ -11,13 +11,15 @@ public class PortBlockerWebRoutable implements RestletRoutable {
 	@Override
 	public Restlet getRestlet(Context context) {
 		Router router = new Router(context);
-		router.attach("/json", PortBlockerResource.class);
+		router.attach("/list/json", PortBlockerResource.class);
+		router.attach("/json/enable", PortBlockerResource.class);
+		router.attach("/json/disable", PortBlockerResource.class);
 		return router;
 	}
 
 	@Override
 	public String basePath() {
-		return "/test/portblock";
+		return "/wm/portblocker";
 	}
 
 }
