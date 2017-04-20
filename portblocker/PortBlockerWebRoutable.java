@@ -12,8 +12,8 @@ public class PortBlockerWebRoutable implements RestletRoutable {
 	public Restlet getRestlet(Context context) {
 		Router router = new Router(context);
 		router.attach("/list/json", PortBlockerResource.class);
-		router.attach("/json/enable", PortBlockerResource.class);
-		router.attach("/json/disable", PortBlockerResource.class);
+		router.attach("/enable/json", PortBlockerEnableResource.class);
+		router.attach("/disable/json", PortBlockerDisableResource.class);
 		return router;
 	}
 
