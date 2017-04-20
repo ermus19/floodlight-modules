@@ -1,6 +1,7 @@
 package net.floodlightcontroller.portblocker;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -16,12 +17,44 @@ public class PortBlockerSerializer extends JsonSerializer<PortBlocker> {
 
 		if (blocker != null) {
 
-			jGen.writeStartObject();
-			jGen.writeString("{ TO-DO }");
-			jGen.writeEndObject();
+			Map<String, Map<Integer, String>> portList = blocker.getPorts();
 
+			if (portList.isEmpty()) {
+
+				jGen.writeStartObject();
+				jGen.writeEndObject();
+
+			} else {
+
+				jGen.writeStartObject();
+
+				Iterator<Map.Entry<String, Map<Integer, String>>> mapIterator = portList.entrySet().iterator();
+
+				while (mapIterator.hasNext()) {
+
+					Map.Entry<String, Map<Integer, String>> parentPair = mapIterator.next();
+
+					jGen.writeArrayFieldStart(parentPair.getKey().toString());
+
+					Iterator<Map.Entry<Integer, String>> submapIterator = (parentPair.getValue()).entrySet().iterator();
+
+					while (submapIterator.hasNext()) {
+
+						Map.Entry childPair = submapIterator.next();
+
+						jGen.writeStartObject();
+						jGen.writeStringField("port", childPair.getKey().toString());
+						jGen.writeStringField("status", childPair.getValue().toString());
+						jGen.writeEndObject();
+
+					}
+
+					jGen.writeEndArray();
+
+				}
+
+				jGen.writeEndObject();
+			}
 		}
-
 	}
-
 }
